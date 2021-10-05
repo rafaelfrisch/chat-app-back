@@ -6,5 +6,6 @@ const router = new express.Router()
 
 router.post('/user', controllers.createUser)
 router.post('/user/login', controllers.userLogin)
+router.get('/user', middlewares.auth, controllers.getUserData)
 
 module.exports = router

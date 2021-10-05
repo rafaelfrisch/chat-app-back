@@ -22,3 +22,14 @@ export const userLogin = async (request, response) => {
         response.status(400).send({'message' : 'Login error', error})
     }
 }
+
+export const getUserData = async (request, response) => {
+    try {
+        const user = request.user
+        if(!user)
+            throw new Error()
+        response.send(user)
+    } catch (error) {
+        response.status(404).send({'message': 'User not Found', error})
+    }
+}
