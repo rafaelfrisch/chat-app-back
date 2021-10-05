@@ -14,6 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors('*'));
 app.use(compression());
 app.use(routers.userRouter)
+app.use(routers.conversationRouter)
 
 app.use(logErrors);
 app.use(clientError);
