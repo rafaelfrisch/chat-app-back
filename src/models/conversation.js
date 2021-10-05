@@ -6,7 +6,9 @@ const conversationSchema = new mongoose.Schema({
         ref: 'User'
     }],
     messages: [{
-        type: String,
+        text: {
+            type: String
+        },
         user: {
             type: mongoose.Schema.Types.ObjectId,
             required: true

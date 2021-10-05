@@ -23,3 +23,22 @@ export const createConversation = async (request, response) => {
         response.status(400).send(error)
     }
 }
+
+export const newMessage = async (request, response) => {
+    try {
+        const user = request.user
+        if(!user || !request.params.id || !request.body.message)
+            throw new Error()
+        
+        const conversation = await models.Conversation.findById(request.params.id)
+        
+        conversation.messages.push({
+            text: request.body.message,
+            user
+        })
+        await conversation.save()        
+        response.send(conversation)
+    } catch (error) {
+        response.status(400).send(error)
+    }
+}
