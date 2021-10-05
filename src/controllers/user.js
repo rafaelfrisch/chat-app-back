@@ -1,7 +1,7 @@
-import { User } from '../models/user'
+import * as models from '../models'
 
 export const createUser = async (request, response) => {
-    const user = new User(request.body)
+    const user = new models.User(request.body)
 
     try {
         await user.save()
@@ -15,7 +15,7 @@ export const createUser = async (request, response) => {
 
 export const userLogin = async (request, response) => {
     try {
-        const user = await User.findByCredentials(request.body.email, request.body.password)
+        const user = await models.User.findByCredentials(request.body.email, request.body.password)
         const token = await user.generateAuthToken()
         response.send({ user, token })
     } catch (error) {

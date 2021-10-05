@@ -4,7 +4,7 @@ import express from 'express';
 import compression from 'compression';
 import { logErrors, clientError, serverError } from './errorHandlers';
 import './connect';
-const routers = require('./routes/index')
+import * as routers from './routes'
 
 const app = express();
 
@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors('*'));
 app.use(compression());
-app.use(routers)
+app.use(routers.userRouter)
 
 app.use(logErrors);
 app.use(clientError);

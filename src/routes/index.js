@@ -1,3 +1,1 @@
-const userRouter = require('./user')
-
-module.exports = userRouter
+export * from './user'

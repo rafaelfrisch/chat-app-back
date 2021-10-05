@@ -1,8 +1,7 @@
+import * as constants from '../settings'
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-import { jwtPrivateKey } from '../settings';
-
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -35,7 +34,7 @@ const userSchema = new mongoose.Schema({
 
 userSchema.methods.generateAuthToken = async function () {
     const user = this
-    const token = jwt.sign({ _id: user.id.toString() }, jwtPrivateKey)
+    const token = jwt.sign({ _id: user.id.toString() }, constants.jwtPrivateKey)
 
     user.tokens = user.tokens.concat({ token })
     await user.save()
