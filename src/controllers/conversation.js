@@ -1,3 +1,4 @@
+import { compile } from 'morgan'
 import * as models from '../models'
 
 export const createConversation = async (request, response) => {
@@ -13,11 +14,18 @@ export const createConversation = async (request, response) => {
         if(!users)
             throw new Error()
 
-        const conversation = new models.Conversation({ users: request.body.users })
+        const newUsersArray = request.body.users.map((userId) => {
+            const userElement = {
+                user: userId
+            }
+            return userElement
+        })
+        
+        const conversation = new models.Conversation({ users: newUsersArray })
        
         await conversation.save()
 
-        response.status(201).send(users)
+        response.status(201).send(conversation)
 
     } catch (error) {
         response.status(400).send(error)
@@ -38,6 +46,21 @@ export const newMessage = async (request, response) => {
         })
         await conversation.save()        
         response.send(conversation)
+    } catch (error) {
+        response.status(400).send(error)
+    }
+}
+
+export const getAllConversations = async (request, response) => {
+    try {
+        const user = request.user
+        if(!user)
+            throw new Error()
+        
+        const userConversations = await models.Conversation.find({'users.user': user})
+        
+        response.send(userConversations)
+
     } catch (error) {
         response.status(400).send(error)
     }
