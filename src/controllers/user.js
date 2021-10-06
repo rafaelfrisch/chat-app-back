@@ -43,3 +43,12 @@ export const findByUsername = async (request, response) => {
         response.status(404).send({'message': 'User not Found', error})
     }
 }
+
+export const findById = async (request, response) => {
+    try {
+        const user = await models.User.findById(request.params.id)
+        response.send({ username: user.username })
+    } catch (error) {
+        response.status(404).send({'message': 'User not Found', error})
+    }
+}
