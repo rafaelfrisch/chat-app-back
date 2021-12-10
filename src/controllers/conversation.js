@@ -55,9 +55,9 @@ export const getAllConversationsFromUser = async (request, response) => {
     try {
         const user = request.user
         
-        const userConversations = await models.Conversation.find({ 'users': user._id })
-        
-        response.send(userConversations)
+        const userConversations = await models.Conversation.find({ 'users': user._id }).populate('users', ['username', '_id'])
+
+        response.status(200).send(userConversations)
 
     } catch (error) {
         response.status(400).send(error)
