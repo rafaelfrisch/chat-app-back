@@ -6,6 +6,6 @@ const router = new express.Router()
 
 router.post('/conversation', middlewares.auth, controllers.createConversation)
 router.put('/conversation/:id', middlewares.auth, controllers.newMessage)
-router.get('/conversation', middlewares.auth, controllers.getAllConversations)
+router.get('/conversationfromuser', middlewares.auth, controllers.getAllConversationsFromUser)
 
 export const conversationRouter = router

@@ -3,7 +3,7 @@ import * as models from '../models'
 export const createConversation = async (request, response) => {
     try {
         const user = request.user
-        
+        const name = request.body.name
         // check if users exists
         const users = await models.User.find({_id : { $in: request.body.users } })
 
@@ -21,7 +21,7 @@ export const createConversation = async (request, response) => {
         if(checkConversation.length !=0)
             return response.status(400).send('Conversation Already Exists')
         
-        const conversation = new models.Conversation({ users: newUsersArray })
+        const conversation = new models.Conversation({ users: newUsersArray, name: name })
        
         await conversation.save()
 
@@ -46,6 +46,19 @@ export const newMessage = async (request, response) => {
         })
         await conversation.save()        
         response.send(conversation)
+    } catch (error) {
+        response.status(400).send(error)
+    }
+}
+
+export const getAllConversationsFromUser = async (request, response) => {
+    try {
+        const user = request.user
+        
+        const userConversations = await models.Conversation.find({ 'users': user._id })
+        
+        response.send(userConversations)
+
     } catch (error) {
         response.status(400).send(error)
     }
