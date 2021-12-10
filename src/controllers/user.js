@@ -18,7 +18,7 @@ export const userLogin = async (request, response) => {
     try {
         const user = await models.User.findByCredentials(request.body.email, request.body.password)
         const token = await user.generateAuthToken()
-        response.send({ user, token })
+        response.status(200).send({ user, token })
     } catch (error) {
         response.status(400).send({'message' : 'Login error', error})
     }

@@ -45,7 +45,7 @@ export const newMessage = async (request, response) => {
             user
         })
         await conversation.save()        
-        response.send(conversation)
+        response.status(201).send(conversation)
     } catch (error) {
         response.status(400).send(error)
     }
