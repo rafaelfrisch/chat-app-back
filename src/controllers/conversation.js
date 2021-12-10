@@ -1,25 +1,25 @@
-import { compile } from 'morgan'
 import * as models from '../models'
 
 export const createConversation = async (request, response) => {
     try {
         const user = request.user
-
-        if(!user)
-            throw new Error()
         
         // check if users exists
         const users = await models.User.find({_id : { $in: request.body.users } })
 
-        if(!users)
-            throw new Error()
+        if(users.length != request.body.users.length || !users)
+            return response.status(400).send('Wrong users Ids')
 
-        const newUsersArray = request.body.users.map((userId) => {
-            const userElement = {
-                user: userId
-            }
-            return userElement
-        })
+        const newUsersArray = request.body.users
+        
+        // add current user to conversation
+        newUsersArray.push(user._id)
+
+        // check if conversation already Exists
+        const checkConversation = await models.Conversation.find({users: newUsersArray })
+    
+        if(checkConversation.length !=0)
+            return response.status(400).send('Conversation Already Exists')
         
         const conversation = new models.Conversation({ users: newUsersArray })
        
@@ -36,7 +36,7 @@ export const newMessage = async (request, response) => {
     try {
         const user = request.user
         if(!user || !request.params.id || !request.body.message)
-            throw new Error()
+            return response.status(400).send('Error')
         
         const conversation = await models.Conversation.findById(request.params.id)
         
@@ -46,21 +46,6 @@ export const newMessage = async (request, response) => {
         })
         await conversation.save()        
         response.send(conversation)
-    } catch (error) {
-        response.status(400).send(error)
-    }
-}
-
-export const getAllConversations = async (request, response) => {
-    try {
-        const user = request.user
-        if(!user)
-            throw new Error()
-        
-        const userConversations = await models.Conversation.find({'users.user': user})
-        
-        response.send(userConversations)
-
     } catch (error) {
         response.status(400).send(error)
     }
