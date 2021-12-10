@@ -9,7 +9,7 @@ export const auth = async (request, response, next) => {
         const user = await models.User.findOne({ _id: decoded._id, 'tokens.token': token})
         
         if(!user){
-            throw new Error()
+            return response.status(400).send('Token not found')
         }
 
         request.user = user
