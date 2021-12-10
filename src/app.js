@@ -15,6 +15,7 @@ app.use(cors('*'));
 app.use(compression());
 app.use(routers.userRouter)
 app.use(routers.conversationRouter)
+app.use(routers.oAuthRouter)
 
 app.use(logErrors);
 app.use(clientError);
