@@ -6,7 +6,7 @@
   "author": "rafaelfrisch <rafaelcassolfrisch@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "babel ./src --out-dir build& node ./build/bin/www",
+    "start": "babel ./src --out-dir build && node ./build/bin/www",
     "startdev": "nodemon --exec babel-node ./src/bin/www"
   },
   "dependencies": {
